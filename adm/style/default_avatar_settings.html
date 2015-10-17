@@ -1,0 +1,41 @@
+<!-- INCLUDE overall_header.html -->
+
+<form id="acp_board" method="post" action="{U_ACTION}">
+	<h1>{L_SETTINGS}</h1>
+	
+	<div class="errorbox notice">
+		{DEFAULT_AVATAR_NOTICE}
+	</div>
+	
+	<fieldset class="default-avatar-options">
+		<dl>
+			<dt>
+				<label for="default_avatar_driver">{L_ACP_DEFAULT_AVATAR_DRIVER}</label>
+			</dt>
+			<dd>
+				<select name="default_avatar_driver">
+					<option value="local"<!-- IF DEFAULT_AVATAR_DRIVER eq "local" --> selected="selected"<!-- ENDIF -->>{L_ACP_DEFAULT_AVATAR_DRIVER_LOCAL}</option>
+					<option value="remote"<!-- IF DEFAULT_AVATAR_DRIVER eq "remote" --> selected="selected"<!-- ENDIF -->>{L_ACP_DEFAULT_AVATAR_DRIVER_REMOTE}</option>
+					<option value="gravatar"<!-- IF DEFAULT_AVATAR_DRIVER eq "gravatar" --> selected="selected"<!-- ENDIF -->>{L_ACP_DEFAULT_AVATAR_DRIVER_GRAVATAR}</option>
+				</select>
+			</dd>
+		</dl>
+		<dl>
+			<dt>
+				<label for="default_avatar_image">{L_ACP_DEFAULT_AVATAR_IMAGE}</label>
+			</dt>
+			<dd>
+				<input type="text" name="default_avatar_image"<!-- IF DEFAULT_AVATAR_IMAGE --> value="{DEFAULT_AVATAR_IMAGE}"<!-- ENDIF --> size="80" />
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<p class="submit-buttons">
+			<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+			<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		</p>
+		{S_FORM_TOKEN}
+	</fieldset>
+</form>
+<!-- INCLUDE overall_footer.html -->

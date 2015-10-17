@@ -1,0 +1,10 @@
+services:
+    alfredoramos.defaultavatar.listener:
+        class: alfredoramos\defaultavatar\event\listener
+        arguments:
+            - @controller.helper
+            - @template
+            - @config
+            - @user
+        tags:
+            - { name: event.listener }
