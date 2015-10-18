@@ -7,13 +7,15 @@
 		<p>{DEFAULT_AVATAR_DIMENSIONS_NOTICE}</p>
 	</div>
 	
+	<noscript class="errorbox error">{L_ACP_DEFAULT_AVATAR_JAVASCRIPT_WARNING}</noscript>
+	
 	<fieldset class="default-avatar-options">
 		<dl>
 			<dt>
 				<label for="default_avatar_driver">{L_ACP_DEFAULT_AVATAR_DRIVER}</label>
 			</dt>
 			<dd>
-				<select name="default_avatar_driver">
+				<select name="default_avatar_driver" id="default_avatar_driver" class="default-avatar-control">
 					<option value="local"<!-- IF DEFAULT_AVATAR_DRIVER eq "local" --> selected="selected"<!-- ENDIF -->>{L_ACP_DEFAULT_AVATAR_DRIVER_LOCAL}</option>
 					<option value="remote"<!-- IF DEFAULT_AVATAR_DRIVER eq "remote" --> selected="selected"<!-- ENDIF -->>{L_ACP_DEFAULT_AVATAR_DRIVER_REMOTE}</option>
 					<option value="gravatar"<!-- IF DEFAULT_AVATAR_DRIVER eq "gravatar" --> selected="selected"<!-- ENDIF -->>{L_ACP_DEFAULT_AVATAR_DRIVER_GRAVATAR}</option>
@@ -26,7 +28,7 @@
 				<br /><span>{DEFAULT_AVATAR_DRIVER_NOTICE}</span>
 			</dt>
 			<dd>
-				<input type="text" name="default_avatar_image"<!-- IF DEFAULT_AVATAR_IMAGE --> value="{DEFAULT_AVATAR_IMAGE}"<!-- ENDIF --> size="80" />
+				<input type="text" name="default_avatar_image" id="default_avatar_image"<!-- IF DEFAULT_AVATAR_IMAGE --> value="{DEFAULT_AVATAR_IMAGE}"<!-- ENDIF --> size="80" class="default-avatar-control" />
 			</dd>
 		</dl>
 		<dl>
@@ -35,7 +37,16 @@
 				<br /><span>{L_MAX_AVATAR_SIZE_EXPLAIN}</span>
 			</dt>
 			<dd>
-				<input type="number" min="{CONFIG_AVATAR_MIN_WIDTH}" max="{CONFIG_AVATAR_MAX_WIDTH}" value="{DEFAULT_AVATAR_WIDTH}" name="default_avatar_width" /> x <input type="number" min="{CONFIG_AVATAR_MIN_HEIGHT}" max="{CONFIG_AVATAR_MAX_HEIGHT}" value="{DEFAULT_AVATAR_HEIGHT}" name="default_avatar_height" />
+				<input type="number" min="{CONFIG_AVATAR_MIN_WIDTH}" max="{CONFIG_AVATAR_MAX_WIDTH}" value="{DEFAULT_AVATAR_WIDTH}" name="default_avatar_width" id="default_avatar_width" class="default-avatar-control" /> x <input type="number" min="{CONFIG_AVATAR_MIN_HEIGHT}" max="{CONFIG_AVATAR_MAX_HEIGHT}" value="{DEFAULT_AVATAR_HEIGHT}" name="default_avatar_height" id="default_avatar_height" class="default-avatar-control" />
+			</dd>
+		</dl>
+		<dl>
+			<dt>
+				<label>{L_PREVIEW}</label>
+				<br /><span>{L_ACP_DEFAULT_AVATAR_IMAGE_PREVIEW_INFO}</span>
+			</dt>
+			<dd>
+				<div id="default_avatar_preview" data-board-url="{BOARD_URL}" data-min-width="{CONFIG_AVATAR_MIN_WIDTH}" data-max-width="{CONFIG_AVATAR_MAX_WIDTH}" data-min-height="{CONFIG_AVATAR_MIN_HEIGHT}" data-max-height="{CONFIG_AVATAR_MAX_HEIGHT}"></div>
 			</dd>
 		</dl>
 	</fieldset>

@@ -33,5 +33,7 @@ $lang = array_merge($lang, [
 	'ACP_DEFAULT_AVATAR_IMAGE'					=> 'Avatar image',
 	'ACP_DEFAULT_AVATAR_IMAGE_DIMENSIONS'		=> 'Avatar dimensions',
 	'ACP_DEFAULT_AVATAR_IMAGE_DIMENSIONS_INFO'	=> 'Maximum and minimum image dimensions depend on the <strong>%s</strong>.',
+	'ACP_DEFAULT_AVATAR_JAVASCRIPT_WARNING'		=> 'Preview requires JavaScript to function, please turn it on.',
+	'ACP_DEFAULT_AVATAR_IMAGE_PREVIEW_INFO'		=> 'This is what the avatar will look like.',
 	'ACP_DEFAULT_AVATAR_SETTINGS_SAVED'			=> 'Settings have been saved successfully!'
 ]);

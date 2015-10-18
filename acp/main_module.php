@@ -16,7 +16,7 @@ class main_module {
 
 		$user->add_lang('acp/common');
 		$user->add_lang('acp/board');
-		$this->tpl_name = 'default_avatar_settings';
+		$this->tpl_name = 'acp_default_avatar_settings';
 		$this->page_title = $user->lang('ACP_DEFAULT_AVATAR');
 		add_form_key('alfredoramos/defaultavatar');
 		
@@ -76,6 +76,7 @@ class main_module {
 		 */
 		$template->assign_vars([
 			'U_ACTION'							=> $this->u_action,
+			'BOARD_URL'							=> generate_board_url() . '/',
 			'DEFAULT_AVATAR_IMAGE'				=> $config['default_avatar_image'],
 			'DEFAULT_AVATAR_DRIVER'				=> $config['default_avatar_driver'],
 			'DEFAULT_AVATAR_WIDTH'				=> $config['default_avatar_width'],
