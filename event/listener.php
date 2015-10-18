@@ -46,7 +46,8 @@ class listener implements EventSubscriberInterface {
 			'core.user_setup'					=> 'load_language_on_setup',
 			'core.page_header'					=> 'page_header_default_avatar',
 			'core.viewtopic_post_rowset_data'	=> 'viewtopic_post_default_avatar',
-			'core.ucp_pm_view_messsage'			=> 'ucp_pm_default_avatar'
+			'core.ucp_pm_view_messsage'			=> 'ucp_pm_default_avatar',
+			'core.memberlist_view_profile'		=> 'viewprofile_default_avatar'
 		];
 	}
 	
@@ -64,8 +65,8 @@ class listener implements EventSubscriberInterface {
 			$default_avatar_set_ext = array_merge($this->user->data, [
 				'user_avatar'			=> $this->config['default_avatar_image'],
 				'user_avatar_type'		=> 'avatar.driver.' . $this->config['default_avatar_driver'],
-				'user_avatar_width'		=> $this->config['avatar_max_width'],
-				'user_avatar_height'	=> $this->config['avatar_max_height']
+				'user_avatar_width'		=> $this->config['default_avatar_width'],
+				'user_avatar_height'	=> $this->config['default_avatar_height']
 			]);
 			$this->user->data = $default_avatar_set_ext;
 		}
@@ -76,8 +77,8 @@ class listener implements EventSubscriberInterface {
 			$default_avatar_set_ext = array_merge($event['row'], [
 				'user_avatar'			=> $this->config['default_avatar_image'],
 				'user_avatar_type'		=> 'avatar.driver.' . $this->config['default_avatar_driver'],
-				'user_avatar_width'		=> $this->config['avatar_max_width'],
-				'user_avatar_height'	=> $this->config['avatar_max_height']
+				'user_avatar_width'		=> $this->config['default_avatar_width'],
+				'user_avatar_height'	=> $this->config['default_avatar_height']
 			]);
 			$event['row'] = $default_avatar_set_ext;
 		}
@@ -88,12 +89,24 @@ class listener implements EventSubscriberInterface {
 			$default_avatar_set_ext = array_merge($event['msg_data'], [
 				'AUTHOR_AVATAR'	=> vsprintf('<img src="%s" width="%d" height="%d" alt="%s" />', [
 					$this->config['default_avatar_image'],
-					$this->config['avatar_max_width'],
-					$this->config['avatar_max_height'],
+					$this->config['default_avatar_width'],
+					$this->config['default_avatar_height'],
 					$this->user->lang('USER_AVATAR')
 				])
 			]);
 			$event['msg_data'] = $default_avatar_set_ext;
+		}
+	}
+	
+	public function viewprofile_default_avatar($event) {
+		if (empty($event['member']['user_avatar']) && $this->config['allow_avatar']) {
+			$default_avatar_set_ext = array_merge($event['member'], [
+				'user_avatar'			=> $this->config['default_avatar_image'],
+				'user_avatar_type'		=> 'avatar.driver.' . $this->config['default_avatar_driver'],
+				'user_avatar_width'		=> $this->config['default_avatar_width'],
+				'user_avatar_height'	=> $this->config['default_avatar_height']
+			]);
+			$event['member'] = $default_avatar_set_ext;
 		}
 	}
 	

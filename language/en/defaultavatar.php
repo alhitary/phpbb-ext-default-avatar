@@ -27,10 +27,11 @@ $lang = array_merge($lang, [
 	'ACP_DEFAULT_AVATAR_DRIVER_LOCAL'			=> 'Local',
 	'ACP_DEFAULT_AVATAR_DRIVER_LOCAL_INFO'		=> 'Must be a relative image to <code>%s</code>.',
 	'ACP_DEFAULT_AVATAR_DRIVER_REMOTE'			=> 'Remote',
-	'ACP_DEFAULT_AVATAR_DRIVER_REMOTE_INFO'		=> 'Can be an external link as well as a relative image to your phpBB root directory.',
+	'ACP_DEFAULT_AVATAR_DRIVER_REMOTE_INFO'		=> 'Can be an external link or a relative image to your phpBB root directory.',
 	'ACP_DEFAULT_AVATAR_DRIVER_GRAVATAR'		=> 'Gravatar',
 	'ACP_DEFAULT_AVATAR_DRIVER_GRAVATAR_INFO'	=> 'Must be a valid email address.',
 	'ACP_DEFAULT_AVATAR_IMAGE'					=> 'Avatar image',
-	'ACP_DEFAULT_AVATAR_IMAGE_DIMENSIONS'		=> 'Default image dimensions depend on the <strong>%s</strong>. Currently are set to <code>%d</code> x <code>%d</code> pixels.',
+	'ACP_DEFAULT_AVATAR_IMAGE_DIMENSIONS'		=> 'Avatar dimensions',
+	'ACP_DEFAULT_AVATAR_IMAGE_DIMENSIONS_INFO'	=> 'Maximum and minimum image dimensions depend on the <strong>%s</strong>.',
 	'ACP_DEFAULT_AVATAR_SETTINGS_SAVED'			=> 'Settings have been saved successfully!'
 ]);

@@ -4,7 +4,7 @@
 	"description": "Default Avatar Extension for phpBB 3.1.x",
 	"homepage": "https://github.com/AlfredoRamos/phpbb-ext-default-avatar",
 	"version": "0.1.0-dev",
-	"time": "2015-10-17",
+	"time": "2015-10-18",
 	"keywords": ["avatar", "gravatar", "phpbb", "extension"],
 	"license": "GPL-3.0+",
 	"authors": [

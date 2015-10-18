@@ -27,6 +27,14 @@ class m1_default_avatar_data extends \phpbb\db\migration\migration {
 				['default_avatar_driver', 'remote']
 			],
 			[
+				'config.add',
+				['default_avatar_width', $this->config['avatar_max_width']]
+			],
+			[
+				'config.add',
+				['default_avatar_height', $this->config['avatar_max_height']]
+			],
+			[
 				'module.add',
 				['acp', 'ACP_CAT_DOT_MODS', 'ACP_DEFAULT_AVATAR']
 			],
@@ -50,7 +58,9 @@ class m1_default_avatar_data extends \phpbb\db\migration\migration {
 				'config.remove',
 				[
 					'default_avatar_image',
-					'default_avatar_driver'
+					'default_avatar_driver',
+					'default_avatar_width',
+					'default_avatar_height'
 				]
 			]
 		];
