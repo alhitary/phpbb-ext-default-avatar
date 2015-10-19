@@ -23,8 +23,10 @@ class listener implements EventSubscriberInterface {
 	/* @var \phpbb\config\config */
 	protected $config;
 	
-	/* @vat \phpbb\user */
+	/* @var \phpbb\user */
 	protected $user;
+	
+	private $default_avatar;
 	
 	/**
 	 * Constructor
@@ -39,6 +41,14 @@ class listener implements EventSubscriberInterface {
 		$this->template = $template;
 		$this->config = $config;
 		$this->user = $user;
+		
+		/* Default avatar data */
+		$this->default_avatar = [
+			'user_avatar'			=> $this->config['default_avatar_image'],
+			'user_avatar_type'		=> 'avatar.driver.' . $this->config['default_avatar_driver'],
+			'user_avatar_width'		=> $this->config['default_avatar_width'],
+			'user_avatar_height'	=> $this->config['default_avatar_height']
+		];
 	}
 	
 	static public function getSubscribedEvents() {
@@ -62,25 +72,13 @@ class listener implements EventSubscriberInterface {
 	
 	public function page_header_default_avatar($event) {
 		if (empty($this->user->data['user_avatar']) && $this->config['allow_avatar']) {
-			$default_avatar_set_ext = array_merge($this->user->data, [
-				'user_avatar'			=> $this->config['default_avatar_image'],
-				'user_avatar_type'		=> 'avatar.driver.' . $this->config['default_avatar_driver'],
-				'user_avatar_width'		=> $this->config['default_avatar_width'],
-				'user_avatar_height'	=> $this->config['default_avatar_height']
-			]);
-			$this->user->data = $default_avatar_set_ext;
+			$this->user->data = array_merge($this->user->data, $this->default_avatar);
 		}
 	}
 	
 	public function viewtopic_post_default_avatar($event) {
 		if (empty($event['row']['user_avatar']) && $this->config['allow_avatar']) {
-			$default_avatar_set_ext = array_merge($event['row'], [
-				'user_avatar'			=> $this->config['default_avatar_image'],
-				'user_avatar_type'		=> 'avatar.driver.' . $this->config['default_avatar_driver'],
-				'user_avatar_width'		=> $this->config['default_avatar_width'],
-				'user_avatar_height'	=> $this->config['default_avatar_height']
-			]);
-			$event['row'] = $default_avatar_set_ext;
+			$event['row'] = array_merge($event['row'], $this->default_avatar);
 		}
 	}
 	
@@ -100,13 +98,7 @@ class listener implements EventSubscriberInterface {
 	
 	public function viewprofile_default_avatar($event) {
 		if (empty($event['member']['user_avatar']) && $this->config['allow_avatar']) {
-			$default_avatar_set_ext = array_merge($event['member'], [
-				'user_avatar'			=> $this->config['default_avatar_image'],
-				'user_avatar_type'		=> 'avatar.driver.' . $this->config['default_avatar_driver'],
-				'user_avatar_width'		=> $this->config['default_avatar_width'],
-				'user_avatar_height'	=> $this->config['default_avatar_height']
-			]);
-			$event['member'] = $default_avatar_set_ext;
+			$event['member'] = array_merge($event['member'], $this->default_avatar);
 		}
 	}
 	
