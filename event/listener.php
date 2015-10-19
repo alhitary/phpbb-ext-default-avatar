@@ -88,7 +88,7 @@ class listener implements EventSubscriberInterface {
 		if (empty($event['msg_data']['AUTHOR_AVATAR']) && $this->config['allow_avatar']) {
 			$default_avatar_set_ext = array_merge($event['msg_data'], [
 				'AUTHOR_AVATAR'	=> vsprintf('<img src="%s" width="%d" height="%d" alt="%s" />', [
-					$this->config['default_avatar_image'],
+					($this->config['default_avatar_driver'] === 'local' ? './' . $this->config['avatar_gallery_path'] . '/' : '') . $this->config['default_avatar_image'],
 					$this->config['default_avatar_width'],
 					$this->config['default_avatar_height'],
 					$this->user->lang('USER_AVATAR')
