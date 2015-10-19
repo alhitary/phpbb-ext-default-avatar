@@ -10,5 +10,5 @@ Default Avatar Extension for phpBB 3.1.x is released under [GNU GPL 3.0+](https:
 
 ## Preview
 
-![Preview ACP](https://i.imgur.com/necSGqT.png)
+![Preview ACP](https://i.imgur.com/N4DV3U6.png)
 ![Preview Viewtopic](https://i.imgur.com/mALb9e0.png)
