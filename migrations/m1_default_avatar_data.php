@@ -26,11 +26,11 @@ class m1_default_avatar_data extends \phpbb\db\migration\migration {
 			],
 			[
 				'config.add',
-				['default_avatar_driver', 'remote']
+				['default_avatar_driver', 'avatar.driver.remote']
 			],
 			[
 				'config.add',
-				['default_avatar_image', $defaultavatar->get_current_style_avatar()]
+				['default_avatar_image', '']
 			],
 			[
 				'config.add',
