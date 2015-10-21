@@ -17,6 +17,7 @@ function setup_default_avatar_preview() {
 	 */
 	var $previewWrapper = $('#default_avatar_preview');
 	var $board_url = $.trim($previewWrapper.attr('data-board-url'));
+	var $board_style = $.trim($previewWrapper.attr('data-board-style'));
 	var $min_width = parseInt($.trim($previewWrapper.attr('data-min-width')));
 	var $max_width = parseInt($.trim($previewWrapper.attr('data-max-width')));
 	var $min_height = parseInt($.trim($previewWrapper.attr('data-min-height')));
@@ -25,7 +26,7 @@ function setup_default_avatar_preview() {
 	/**
 	 * Form variables
 	 */
-	var $driver = $.trim($('#default_avatar_driver').val());
+	var $type = $.trim($('[name="default_avatar_type"]:checked').val());
 	var $image = $.trim($('#default_avatar_image').val());
 	var $width = parseInt($.trim($('#default_avatar_width').val()));
 	var $height = parseInt($.trim($('#default_avatar_height').val()));
@@ -36,13 +37,16 @@ function setup_default_avatar_preview() {
 	var $img = {src: '', width: $width, height: $height};
 	var $html = '';
 	
-	switch ($driver) {
+	switch ($type) {
 		case 'local':
 			$img.src = $board_url + 'images/avatars/gallery/' + $image;
 			break;
+		case 'style':
+			$img.src = $board_url + 'styles/' + $board_style + '/theme/images/no_avatar.gif';
+			break;
 		case 'remote':
 			var $matches = [];
-			$img.src = ($matches = $image.match(/https?:\/\/(?:www\.)?/i)) ? $image : $board_url + $image;
+			$img.src = ($matches = $image.match(/(https?:\/\/(?:www\.)?)|(data:\w+\/\w+;base64)/i)) ? $image : $board_url + $image;
 			break;
 		case 'gravatar':
 			$img.src = get_gravatar($image, $img.width);

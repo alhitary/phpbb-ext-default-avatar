@@ -38,11 +38,6 @@ class main_module {
 			$avatar_driver = sprintf('avatar.driver.%s', $avatar_type === 'style' ? 'remote' : $avatar_type);
 			
 			/**
-			 * Avatar from style
-			 */
-			$avatar_from_style = ($avatar_type === 'style');
-			
-			/**
 			 * Avatar image
 			 */
 			$avatar_image = $request->variable('default_avatar_image', $config['default_avatar_image']);
@@ -106,6 +101,7 @@ class main_module {
 		$template->assign_vars([
 			'U_ACTION'							=> $this->u_action,
 			'BOARD_URL'							=> generate_board_url() . '/',
+			'BOARD_STYLE_PATH'					=> $defaultavatar->get_style($user->data['user_style'])['style_path'],
 			'DEFAULT_AVATAR_TYPE'				=> $config['default_avatar_type'],
 			'DEFAULT_AVATAR_IMAGE'				=> $config['default_avatar_image'],
 			'DEFAULT_AVATAR_WIDTH'				=> $config['default_avatar_width'],

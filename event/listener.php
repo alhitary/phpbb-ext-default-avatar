@@ -28,6 +28,7 @@ class listener implements EventSubscriberInterface {
 	
 	private $avatar_data;
 	
+	/* @var \alfredoramos\defaultavatar\core\defaultavatar */
 	private $defaultavatar;
 	
 	/**
@@ -45,8 +46,8 @@ class listener implements EventSubscriberInterface {
 		$this->user = $user;
 		
 		/* Default avatar data */
-		$defaultavatar = \alfredoramos\defaultavatar\core\defaultavatar::instance();
-		$avatar_url = ($this->config['default_avatar_type'] === 'style') ? $defaultavatar->get_current_style_avatar() : $this->config['default_avatar_image'];
+		$this->defaultavatar = \alfredoramos\defaultavatar\core\defaultavatar::instance();
+		$avatar_url = ($this->config['default_avatar_type'] === 'style') ? $this->defaultavatar->get_current_style_avatar() : $this->config['default_avatar_image'];
 		$this->avatar_data = [
 			'user_avatar'			=> $avatar_url,
 			'user_avatar_type'		=> $this->config['default_avatar_driver'],
@@ -88,8 +89,8 @@ class listener implements EventSubscriberInterface {
 	
 	public function ucp_pm_default_avatar($event) {
 		if (empty($event['msg_data']['AUTHOR_AVATAR']) && $this->config['allow_avatar']) {
-			$avatar_url = (($this->config['default_avatar_driver'] === 'avatar.driver.local') ? './' . $this->config['avatar_gallery_path'] . '/' : '') . $this->config['default_avatar_image'];
-			$avatar_url = ($this->config['default_avatar_type'] === 'style') ? $defaultavatar->get_current_style_avatar() : $avatar_url;
+			$avatar_url = ($this->config['default_avatar_type'] === 'style') ? $this->defaultavatar->get_current_style_avatar() : $this->config['default_avatar_image'];
+			$avatar_url = (($this->config['default_avatar_type'] === 'avatar.driver.local') ? './' . $this->config['avatar_gallery_path'] . '/' : '') . $avatar_url;
 			$default_avatar_set_ext = array_merge($event['msg_data'], [
 				'AUTHOR_AVATAR'	=> vsprintf('<img src="%s" width="%d" height="%d" alt="%s" />', [
 					$avatar_url,

@@ -55,12 +55,10 @@ class defaultavatar {
 		$result = $this->db->sql_query($sql);;
 		$style = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
-		
 		return $style;
 	}
 	
 	public function get_current_style_avatar() {
-		return sprintf('./styles/%s/theme/images/no_avatar.gif', $this->get_style($this->user->data['user_style'])['style_path']);
-		
+		return sprintf('./styles/%s/theme/images/no_avatar.gif', $this->get_style($this->user->data['user_style'])['style_path']);		
 	}
 }
