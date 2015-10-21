@@ -59,6 +59,12 @@ class defaultavatar {
 	}
 	
 	public function get_current_style_avatar() {
-		return sprintf('./styles/%s/theme/images/no_avatar.gif', $this->get_style($this->user->data['user_style'])['style_path']);		
+		$style = $this->get_style($this->config['default_style']);
+		
+		if ($this->user->data['user_style'] != $this->config['default_style'] && !$this->config['override_user_style']) {
+			$style = $this->get_style($this->user->data['user_style']);
+		}
+		
+		return sprintf('./styles/%s/theme/images/no_avatar.gif', $style['style_path']);
 	}
 }
