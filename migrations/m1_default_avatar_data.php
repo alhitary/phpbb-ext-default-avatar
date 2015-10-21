@@ -17,14 +17,20 @@ class m1_default_avatar_data extends \phpbb\db\migration\migration {
 	 * @return array
 	 */
 	public function update_data() {
+		$defaultavatar = \alfredoramos\defaultavatar\core\defaultavatar::instance();
+		
 		return [
 			[
 				'config.add',
-				['default_avatar_image', './styles/prosilver/theme/images/no_avatar.gif']
+				['default_avatar_type', 'style']
 			],
 			[
 				'config.add',
 				['default_avatar_driver', 'remote']
+			],
+			[
+				'config.add',
+				['default_avatar_image', $defaultavatar->get_current_style_avatar()]
 			],
 			[
 				'config.add',
@@ -57,8 +63,9 @@ class m1_default_avatar_data extends \phpbb\db\migration\migration {
 			[
 				'config.remove',
 				[
-					'default_avatar_image',
+					'default_avatar_type',
 					'default_avatar_driver',
+					'default_avatar_image',
 					'default_avatar_width',
 					'default_avatar_height'
 				]

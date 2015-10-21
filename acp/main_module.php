@@ -20,10 +20,33 @@ class main_module {
 		$this->page_title = $user->lang('ACP_DEFAULT_AVATAR');
 		add_form_key('alfredoramos/defaultavatar');
 		
+		$defaultavatar = \alfredoramos\defaultavatar\core\defaultavatar::instance();
+		
 		if ($request->is_set_post('submit')) {
 			if (!check_form_key('alfredoramos/defaultavatar')) {
 				trigger_error('FORM_INVALID');
 			}
+			
+			/**
+			 * Avatar type
+			 */
+			$avatar_type = $request->variable('default_avatar_type', $config['default_avatar_type']);
+			
+			/**
+			 * Avatar driver
+			 */
+			$avatar_driver = sprintf('avatar.driver.%s', $avatar_type === 'style' ? 'remote' : $avatar_type);
+			
+			/**
+			 * Avatar from style
+			 */
+			$avatar_from_style = ($avatar_type === 'style');
+			
+			/**
+			 * Avatar image
+			 */
+			$avatar_image = $request->variable('default_avatar_image', $config['default_avatar_image']);
+			$avatar_image = ($avatar_type === 'style') ? '' : $avatar_image;
 			
 			/**
 			 * Avatar width
@@ -42,8 +65,9 @@ class main_module {
 			/**
 			 * Avatar settings
 			 */
-			$config->set('default_avatar_image', $request->variable('default_avatar_image', $config['default_avatar_image']));
-			$config->set('default_avatar_driver', $request->variable('default_avatar_driver', $config['default_avatar_driver']));
+			$config->set('default_avatar_type', $avatar_type);
+			$config->set('default_avatar_driver', $avatar_driver);
+			$config->set('default_avatar_image', $avatar_image);
 			$config->set('default_avatar_width', $avatar_width);
 			$config->set('default_avatar_height', $avatar_height);
 			
@@ -53,21 +77,26 @@ class main_module {
 		$driver_notice = vsprintf(
 			'%s<br />'.
 			'%s<br />'.
+			'%s<br />'.
 			'%s<br />',
 			[
 				vsprintf('%s: %s', [
-					$user->lang('ACP_DEFAULT_AVATAR_DRIVER_LOCAL'),
-					vsprintf($user->lang('ACP_DEFAULT_AVATAR_DRIVER_LOCAL_INFO'), [
+					$user->lang('ACP_DEFAULT_AVATAR_TYPE_STYLE'),
+					$user->lang('ACP_DEFAULT_AVATAR_TYPE_STYLE_INFO')
+				]),
+				vsprintf('%s: %s', [
+					$user->lang('ACP_DEFAULT_AVATAR_TYPE_LOCAL'),
+					vsprintf($user->lang('ACP_DEFAULT_AVATAR_TYPE_LOCAL_INFO'), [
 						'./' . $config['avatar_gallery_path']
 					])
 				]),
 				vsprintf('%s: %s', [
-					$user->lang('ACP_DEFAULT_AVATAR_DRIVER_REMOTE'),
-					$user->lang('ACP_DEFAULT_AVATAR_DRIVER_REMOTE_INFO')
+					$user->lang('ACP_DEFAULT_AVATAR_TYPE_REMOTE'),
+					$user->lang('ACP_DEFAULT_AVATAR_TYPE_REMOTE_INFO')
 				]),
 				vsprintf('%s: %s', [
-					$user->lang('ACP_DEFAULT_AVATAR_DRIVER_GRAVATAR'),
-					$user->lang('ACP_DEFAULT_AVATAR_DRIVER_GRAVATAR_INFO'),
+					$user->lang('ACP_DEFAULT_AVATAR_TYPE_GRAVATAR'),
+					$user->lang('ACP_DEFAULT_AVATAR_TYPE_GRAVATAR_INFO'),
 				])
 		]);
 		
@@ -77,11 +106,11 @@ class main_module {
 		$template->assign_vars([
 			'U_ACTION'							=> $this->u_action,
 			'BOARD_URL'							=> generate_board_url() . '/',
+			'DEFAULT_AVATAR_TYPE'				=> $config['default_avatar_type'],
 			'DEFAULT_AVATAR_IMAGE'				=> $config['default_avatar_image'],
-			'DEFAULT_AVATAR_DRIVER'				=> $config['default_avatar_driver'],
 			'DEFAULT_AVATAR_WIDTH'				=> $config['default_avatar_width'],
 			'DEFAULT_AVATAR_HEIGHT'				=> $config['default_avatar_height'],
-			'DEFAULT_AVATAR_DRIVER_NOTICE'		=> $driver_notice,
+			'DEFAULT_AVATAR_TYPE_NOTICE'		=> $driver_notice,
 			'DEFAULT_AVATAR_DIMENSIONS_NOTICE'	=> sprintf($user->lang('ACP_DEFAULT_AVATAR_IMAGE_DIMENSIONS_INFO'), $user->lang('ACP_AVATAR_SETTINGS')),
 			'CONFIG_AVATAR_MIN_WIDTH'			=> $config['avatar_min_width'],
 			'CONFIG_AVATAR_MAX_WIDTH'			=> $config['avatar_max_width'],

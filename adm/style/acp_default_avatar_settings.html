@@ -12,20 +12,19 @@
 	<fieldset class="default-avatar-options">
 		<dl>
 			<dt>
-				<label for="default_avatar_driver">{L_ACP_DEFAULT_AVATAR_DRIVER}</label>
+				<label for="default_avatar_type">{L_ACP_DEFAULT_AVATAR_TYPE}</label>
 			</dt>
 			<dd>
-				<select name="default_avatar_driver" id="default_avatar_driver" class="default-avatar-control">
-					<option value="local"<!-- IF DEFAULT_AVATAR_DRIVER eq "local" --> selected="selected"<!-- ENDIF -->>{L_ACP_DEFAULT_AVATAR_DRIVER_LOCAL}</option>
-					<option value="remote"<!-- IF DEFAULT_AVATAR_DRIVER eq "remote" --> selected="selected"<!-- ENDIF -->>{L_ACP_DEFAULT_AVATAR_DRIVER_REMOTE}</option>
-					<option value="gravatar"<!-- IF DEFAULT_AVATAR_DRIVER eq "gravatar" --> selected="selected"<!-- ENDIF -->>{L_ACP_DEFAULT_AVATAR_DRIVER_GRAVATAR}</option>
-				</select>
+				<input name="default_avatar_type" type="radio" class="radio default-avatar-control" value="style"<!-- IF DEFAULT_AVATAR_TYPE eq "style" --> checked="checked"<!-- ENDIF -->> {L_ACP_DEFAULT_AVATAR_TYPE_STYLE}&nbsp;
+				<input name="default_avatar_type" type="radio" class="radio default-avatar-control" value="local"<!-- IF DEFAULT_AVATAR_TYPE eq "local" --> "checked="checked"<!-- ENDIF -->> {L_ACP_DEFAULT_AVATAR_TYPE_LOCAL}&nbsp;
+				<input name="default_avatar_type" type="radio" class="radio default-avatar-control" value="remote"<!-- IF DEFAULT_AVATAR_TYPE eq "remote" --> checked="checked"<!-- ENDIF -->> {L_ACP_DEFAULT_AVATAR_TYPE_REMOTE}&nbsp;
+				<input name="default_avatar_type" type="radio" class="radio default-avatar-control" value="gravatar"<!-- IF DEFAULT_AVATAR_TYPE eq "gravatar" --> checked="checked"<!-- ENDIF -->> {L_ACP_DEFAULT_AVATAR_TYPE_GRAVATAR}&nbsp;
 			</dd>
 		</dl>
 		<dl>
 			<dt>
 				<label for="default_avatar_image">{L_ACP_DEFAULT_AVATAR_IMAGE}</label>
-				<br /><span>{DEFAULT_AVATAR_DRIVER_NOTICE}</span>
+				<br /><span>{DEFAULT_AVATAR_TYPE_NOTICE}</span>
 			</dt>
 			<dd>
 				<input type="text" name="default_avatar_image" id="default_avatar_image"<!-- IF DEFAULT_AVATAR_IMAGE --> value="{DEFAULT_AVATAR_IMAGE}"<!-- ENDIF --> size="80" class="default-avatar-control" />
@@ -49,6 +48,12 @@
 				<div id="default_avatar_preview" data-board-url="{BOARD_URL}" data-min-width="{CONFIG_AVATAR_MIN_WIDTH}" data-max-width="{CONFIG_AVATAR_MAX_WIDTH}" data-min-height="{CONFIG_AVATAR_MIN_HEIGHT}" data-max-height="{CONFIG_AVATAR_MAX_HEIGHT}"></div>
 			</dd>
 		</dl>
+	</fieldset>
+
+	<fieldset>
+		<!-- BEGIN styles_list -->
+		<pre><code>{styles_list.STYLE_NAME}</code></pre>
+		<!-- END styles_list -->
 	</fieldset>
 
 	<fieldset>
