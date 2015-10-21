@@ -35,7 +35,7 @@ class main_module {
 			/**
 			 * Avatar driver
 			 */
-			$avatar_driver = sprintf('avatar.driver.%s', $avatar_type === 'style' ? 'remote' : $avatar_type);
+			$avatar_driver = sprintf('avatar.driver.%s', ($avatar_type === 'style') ? 'remote' : $avatar_type);
 			
 			/**
 			 * Avatar image

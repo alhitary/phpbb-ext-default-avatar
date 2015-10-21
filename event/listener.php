@@ -70,7 +70,7 @@ class listener implements EventSubscriberInterface {
 		$lang_set_ext = $event['lang_set_ext'];
 		$lang_set_ext[] = [
 			'ext_name'	=> 'alfredoramos/defaultavatar',
-			'lang_set'	=> 'defaultavatar'
+			'lang_set'	=> 'acp/defaultavatar'
 		];
 		$event['lang_set_ext'] = $lang_set_ext;
 	}
@@ -90,7 +90,7 @@ class listener implements EventSubscriberInterface {
 	public function ucp_pm_default_avatar($event) {
 		if (empty($event['msg_data']['AUTHOR_AVATAR']) && $this->config['allow_avatar']) {
 			$avatar_url = ($this->config['default_avatar_type'] === 'style') ? $this->defaultavatar->get_current_style_avatar() : $this->config['default_avatar_image'];
-			$avatar_url = (($this->config['default_avatar_type'] === 'avatar.driver.local') ? './' . $this->config['avatar_gallery_path'] . '/' : '') . $avatar_url;
+			$avatar_url = (($this->config['default_avatar_type'] === 'local') ? './' . $this->config['avatar_gallery_path'] . '/' : '') . $avatar_url;
 			$default_avatar_set_ext = array_merge($event['msg_data'], [
 				'AUTHOR_AVATAR'	=> vsprintf('<img src="%s" width="%d" height="%d" alt="%s" />', [
 					$avatar_url,

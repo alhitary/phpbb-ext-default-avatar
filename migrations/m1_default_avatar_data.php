@@ -10,7 +10,7 @@
 class m1_default_avatar_data extends \phpbb\db\migration\migration {
 	
 	public function effectively_installed() {
-		return isset($this->config['default_avatar_image']);
+		return isset($this->config['default_avatar_type']);
 	}
 	/**
 	 * Install BBCode data
