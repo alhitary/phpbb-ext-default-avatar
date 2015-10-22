@@ -1,10 +1,10 @@
-<?php namespace alfredoramos\defaultavatar\core;
+<?php namespace alfredoramos\defaultavatar\includes;
 
 /**
  * @package Default Avatar - phpBB Extension
  * @author Alfredo Ramos <alfredo.ramos@yandex.com>
  * @copyright (c) 2015 Alfredo Ramos
- * @license GNU GPL 3.0+ <https://www.gnu.org/licenses/gpl-3.0.txt>
+ * @license GNU GPL 2.0 <https://www.gnu.org/licenses/gpl-2.0.txt>
  */
 
 class defaultavatar {

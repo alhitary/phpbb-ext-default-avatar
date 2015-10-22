@@ -1,6 +1,6 @@
 ## Default Avatar
 
-Default Avatar Extension for phpBB 3.1.x is released under [GNU GPL 3.0+](https://www.gnu.org/licenses/gpl-3.0.txt)
+Default Avatar Extension for phpBB 3.1.x is released under [GNU GPL 2.0](https://www.gnu.org/licenses/gpl-2.0.txt)
 
 ## Manual installation
 

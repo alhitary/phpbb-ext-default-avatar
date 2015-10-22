@@ -4,7 +4,7 @@
  * @package Default Avatar - phpBB Extension
  * @author Alfredo Ramos <alfredo.ramos@yandex.com>
  * @copyright (c) 2015 Alfredo Ramos
- * @license GNU GPL 3.0+ <https://www.gnu.org/licenses/gpl-3.0.txt>
+ * @license GNU GPL 2.0 <https://www.gnu.org/licenses/gpl-2.0.txt>
  */
 
 /**
@@ -28,7 +28,7 @@ class listener implements EventSubscriberInterface {
 	
 	private $avatar_data;
 	
-	/* @var \alfredoramos\defaultavatar\core\defaultavatar */
+	/* @var \alfredoramos\defaultavatar\includes\defaultavatar */
 	private $defaultavatar;
 	
 	/**
@@ -46,7 +46,7 @@ class listener implements EventSubscriberInterface {
 		$this->user = $user;
 		
 		/* Default avatar data */
-		$this->defaultavatar = \alfredoramos\defaultavatar\core\defaultavatar::instance();
+		$this->defaultavatar = \alfredoramos\defaultavatar\includes\defaultavatar::instance();
 		$avatar_url = ($this->config['default_avatar_type'] === 'style') ? $this->defaultavatar->get_current_style_avatar() : $this->config['default_avatar_image'];
 		$this->avatar_data = [
 			'user_avatar'			=> $avatar_url,

@@ -4,7 +4,7 @@
  * @package Default Avatar - phpBB Extension
  * @author Alfredo Ramos <alfredo.ramos@yandex.com>
  * @copyright (c) 2015 Alfredo Ramos
- * @license GNU GPL 3.0+ <https://www.gnu.org/licenses/gpl-3.0.txt>
+ * @license GNU GPL 2.0 <https://www.gnu.org/licenses/gpl-2.0.txt>
  */
 
 class main_module {
@@ -20,7 +20,7 @@ class main_module {
 		$this->page_title = $user->lang('ACP_DEFAULT_AVATAR');
 		add_form_key('alfredoramos/defaultavatar');
 		
-		$defaultavatar = \alfredoramos\defaultavatar\core\defaultavatar::instance();
+		$defaultavatar = \alfredoramos\defaultavatar\includes\defaultavatar::instance();
 		
 		if ($request->is_set_post('submit')) {
 			if (!check_form_key('alfredoramos/defaultavatar')) {
