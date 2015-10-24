@@ -47,7 +47,10 @@ class listener implements EventSubscriberInterface {
 		
 		/* Default avatar data */
 		$this->defaultavatar = \alfredoramos\defaultavatar\includes\defaultavatar::instance();
+		$gender = $this->defaultavatar->get_gender();
 		$avatar_url = ($this->config['default_avatar_type'] === 'style') ? $this->defaultavatar->get_current_style_avatar() : $this->config['default_avatar_image'];
+		$avatar_url = (!empty($gender) && $this->config['default_avatar_type'] !== 'style') ? $this->config[sprintf('default_avatar_image_%s', $gender)] : $avatar_url;
+		
 		$this->avatar_data = [
 			'user_avatar'			=> $avatar_url,
 			'user_avatar_type'		=> $this->config['default_avatar_driver'],

@@ -52,7 +52,12 @@ class defaultavatar {
 		$this->db_tools = new \phpbb\db\tools($this->db);
 	}
 	
-	public function get_style($id) {
+	/**
+	 * Get style from ID
+	 * @param	integer	$id	Style id
+	 * @return	array
+	 */
+	public function get_style($id = 1) {
 		$sql = 'SELECT *
 				FROM ' . STYLES_TABLE . '
 				WHERE style_id = "' . $this->db->sql_escape($id) . '"';
@@ -63,12 +68,10 @@ class defaultavatar {
 		return $style;
 	}
 	
-	public function style_avatar_exists($style, $avatar, $ext = 'gif') {
-		$avatar = vsprintf('%s/styles/%s/theme/images/%s.%s', [$this->phpbb_root_path, $style, $avatar, $ext]);
-		
-		return file_exists(realpath($avatar));
-	}
-	
+	/**
+	 * Get current style
+	 * @return	array
+	 */
 	public function get_current_style() {
 		$style = $this->get_style($this->config['default_style']);
 		
@@ -79,37 +82,71 @@ class defaultavatar {
 		return $style;
 	}
 	
+	/**
+	 * Check if avatar image file exists
+	 * @param	array	$style	Style info
+	 * @param	string	$avatar	Avatar image
+	 * @param	string	$ext	Avatar image format
+	 * @return	bool
+	 */
+	public function style_avatar_exists($style = '', $avatar = '', $ext = 'gif') {
+		$avatar = vsprintf('%s/styles/%s/theme/images/%s.%s', [$this->phpbb_root_path, $style, $avatar, $ext]);
+		
+		return file_exists(realpath($avatar));
+	}
+	
+	/**
+	 * Get avatar image from current style
+	 * @return	string
+	 */
 	public function get_current_style_avatar() {
 		$style = $this->get_current_style();
-		$gender = '';
+		$gender = $this->get_gender();
 		$avatar_img = 'no_avatar';
 		$avatar_img_ext = 'gif';
 		$image_extensions = explode(',', trim($this->config['default_avatar_image_extensions']));
 		
 		if ($this->can_enable_gender_avatars() && $this->config['default_avatar_by_gender']) {
-			$gender = ($this->user->data['user_gender'] === '1') ? 'male' : $gender;
-			$gender = ($this->user->data['user_gender'] === '2') ? 'female' : $gender;
 			
-			if (!empty($gender) && !empty($this->config[sprintf('default_avatar_image_%s', $gender)])) {
-				$avatar_img = $this->config[sprintf('default_avatar_image_%s', $gender)];
-			}
+			$avatar_img = (!empty($gender)) ? sprintf('no_avatar_%s', $gender) : $avatar_img;
 			
-			if ($this->config['default_avatar_type'] === 'style') {
+			if (!empty($gender) && $this->config['default_avatar_type'] === 'style') {
+				
 				foreach ($image_extensions as $img_ext) {
 					$img_ext = trim($img_ext);
-				
-					if (!empty($img_ext) && $this->style_avatar_exists($style['style_path'], $avatar_img, $img_ext)) {
-						$avatar_img = (!empty($gender)) ? sprintf('no_avatar_%s', $gender) : $avatar_img;
+					
+					if ($this->style_avatar_exists($style['style_path'], $avatar_img, $img_ext)) {
 						$avatar_img_ext = $img_ext;
 					}
 				}
+				
 			}
+			
 		}
 		
 		return vsprintf('./styles/%s/theme/images/%s.%s', [$style['style_path'], $avatar_img, $avatar_img_ext]);
 	}
 	
+	/**
+	 * Check if avatars by gender can be enabled
+	 * @return	bool
+	 */
 	public function can_enable_gender_avatars() {
 		return $this->db_tools->sql_column_exists(USERS_TABLE, 'user_gender');
+	}
+	
+	/**
+	 * Get user gender if available
+	 * @return	string
+	 */
+	public function get_gender() {
+		$gender = '';
+		
+		if ($this->can_enable_gender_avatars()) {
+			$gender = ($this->user->data['user_gender'] === '1') ? 'male' : $gender;
+			$gender = ($this->user->data['user_gender'] === '2') ? 'female' : $gender;
+		}
+		
+		return $gender;
 	}
 }

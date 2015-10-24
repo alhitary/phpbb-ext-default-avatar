@@ -7,7 +7,7 @@
 
 function get_gravatar($email, $size = 90) {
 	var $base_url = 'https://secure.gravatar.com/avatar/';
-	var $url = $base_url + md5($email) + '.jpg?s=' + $size + '&d=identicon';
+	var $url = $base_url + md5($email) + '.jpg?s=' + $size;
 	return $url;
 }
 

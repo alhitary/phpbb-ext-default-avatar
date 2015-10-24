@@ -31,6 +31,4 @@ trait singletontrait {
 		
 		return static::$instance;
 	}
-	
-	protected function init() {}
 }

@@ -41,6 +41,8 @@ class main_module {
 			 * Avatar image
 			 */
 			$avatar_image = $request->variable('default_avatar_image', $config['default_avatar_image']);
+			$avatar_image_female = $request->variable('default_avatar_image_female', $config['default_avatar_image_female']);
+			$avatar_image_male = $request->variable('default_avatar_image_male', $config['default_avatar_image_male']);
 			
 			/**
 			 * Avatar width
@@ -72,6 +74,8 @@ class main_module {
 			$config->set('default_avatar_type', $avatar_type);
 			$config->set('default_avatar_driver', $avatar_driver);
 			$config->set('default_avatar_image', $avatar_image);
+			$config->set('default_avatar_image_female', $avatar_image_female);
+			$config->set('default_avatar_image_male', $avatar_image_male);
 			$config->set('default_avatar_width', $avatar_width);
 			$config->set('default_avatar_height', $avatar_height);
 			$config->set('default_avatar_by_gender', $avatar_by_gender);
@@ -89,6 +93,8 @@ class main_module {
 			'BOARD_STYLE_PATH'					=> $defaultavatar->get_style($user->data['user_style'])['style_path'],
 			'DEFAULT_AVATAR_TYPE'				=> $config['default_avatar_type'],
 			'DEFAULT_AVATAR_IMAGE'				=> $config['default_avatar_image'],
+			'DEFAULT_AVATAR_IMAGE_FEMALE'		=> $config['default_avatar_image_female'],
+			'DEFAULT_AVATAR_IMAGE_MALE'			=> $config['default_avatar_image_male'],
 			'DEFAULT_AVATAR_WIDTH'				=> $config['default_avatar_width'],
 			'DEFAULT_AVATAR_HEIGHT'				=> $config['default_avatar_height'],
 			'DEFAULT_AVATAR_BY_GENDER'			=> $config['default_avatar_by_gender'],
