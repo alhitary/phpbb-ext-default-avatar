@@ -34,6 +34,9 @@ class defaultavatar {
 	/** @var string */
 	protected $php_ext;
 	
+	/** @var \phpbb\db\tools*/
+	protected $db_tools;
+	
 	protected function init() {
 		global $db, $user, $phpbb_admin_path, $phpbb_root_path, $phpEx, $template, $request, $cache, $auth, $config;
 		
@@ -46,6 +49,7 @@ class defaultavatar {
 		$this->config = $config;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $phpEx;
+		$this->db_tools = new \phpbb\db\tools($this->db);
 	}
 	
 	public function get_style($id) {
@@ -55,16 +59,57 @@ class defaultavatar {
 		$result = $this->db->sql_query($sql);;
 		$style = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
+		
 		return $style;
 	}
 	
-	public function get_current_style_avatar() {
+	public function style_avatar_exists($style, $avatar, $ext = 'gif') {
+		$avatar = vsprintf('%s/styles/%s/theme/images/%s.%s', [$this->phpbb_root_path, $style, $avatar, $ext]);
+		
+		return file_exists(realpath($avatar));
+	}
+	
+	public function get_current_style() {
 		$style = $this->get_style($this->config['default_style']);
 		
 		if ($this->user->data['user_style'] != $this->config['default_style'] && !$this->config['override_user_style']) {
 			$style = $this->get_style($this->user->data['user_style']);
 		}
 		
-		return sprintf('./styles/%s/theme/images/no_avatar.gif', $style['style_path']);
+		return $style;
+	}
+	
+	public function get_current_style_avatar() {
+		$style = $this->get_current_style();
+		$gender = '';
+		$avatar_img = 'no_avatar';
+		$avatar_img_ext = 'gif';
+		$image_extensions = explode(',', trim($this->config['default_avatar_image_extensions']));
+		
+		if ($this->can_enable_gender_avatars() && $this->config['default_avatar_by_gender']) {
+			$gender = ($this->user->data['user_gender'] === '1') ? 'male' : $gender;
+			$gender = ($this->user->data['user_gender'] === '2') ? 'female' : $gender;
+			
+			if (!empty($gender) && !empty($this->config[sprintf('default_avatar_image_%s', $gender)])) {
+				$avatar_img = $this->config[sprintf('default_avatar_image_%s', $gender)];
+			}
+			
+			if ($this->config['default_avatar_type'] === 'style') {
+				foreach ($image_extensions as $img_ext) {
+					$img_ext = trim($img_ext);
+				
+					if (!empty($img_ext) && $this->style_avatar_exists($style['style_path'], $avatar_img, $img_ext)) {
+						$avatar_img = (!empty($gender)) ? sprintf('no_avatar_%s', $gender) : $avatar_img;
+						$avatar_img_ext = $img_ext;
+					}
+				}
+			}
+		}
+		
+		return vsprintf('./styles/%s/theme/images/%s.%s', [$style['style_path'], $avatar_img, $avatar_img_ext]);
+	}
+	
+	public function can_enable_gender_avatars() {
+		return $this->db_tools->sql_column_exists(USERS_TABLE, 'user_gender');
 	}
 }

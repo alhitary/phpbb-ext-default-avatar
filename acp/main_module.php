@@ -41,7 +41,6 @@ class main_module {
 			 * Avatar image
 			 */
 			$avatar_image = $request->variable('default_avatar_image', $config['default_avatar_image']);
-			$avatar_image = ($avatar_type === 'style') ? '' : $avatar_image;
 			
 			/**
 			 * Avatar width
@@ -58,6 +57,16 @@ class main_module {
 			$avatar_height = ($avatar_height > $config['avatar_max_height']) ? $config['avatar_max_height'] : $avatar_height;
 			
 			/**
+			 * Avatar by gender
+			 */
+			$avatar_by_gender = $request->variable('default_avatar_by_gender', $config['default_avatar_by_gender']);
+			
+			/**
+			 * Avatar image extensions
+			 */
+			$avatar_image_extensions = $request->variable('default_avatar_image_extensions', $config['default_avatar_image_extensions']);
+			
+			/**
 			 * Avatar settings
 			 */
 			$config->set('default_avatar_type', $avatar_type);
@@ -65,16 +74,26 @@ class main_module {
 			$config->set('default_avatar_image', $avatar_image);
 			$config->set('default_avatar_width', $avatar_width);
 			$config->set('default_avatar_height', $avatar_height);
+			$config->set('default_avatar_by_gender', $avatar_by_gender);
+			$config->set('default_avatar_image_extensions', $avatar_image_extensions);
 			
 			trigger_error($user->lang('ACP_DEFAULT_AVATAR_SETTINGS_SAVED') . adm_back_link($this->u_action));
 		}
 		
-		$driver_notice = vsprintf(
-			'%s<br />'.
-			'%s<br />'.
-			'%s<br />'.
-			'%s<br />',
-			[
+		/**
+		 * Template variables
+		 */
+		$template->assign_vars([
+			'U_ACTION'							=> $this->u_action,
+			'BOARD_URL'							=> generate_board_url() . '/',
+			'BOARD_STYLE_PATH'					=> $defaultavatar->get_style($user->data['user_style'])['style_path'],
+			'DEFAULT_AVATAR_TYPE'				=> $config['default_avatar_type'],
+			'DEFAULT_AVATAR_IMAGE'				=> $config['default_avatar_image'],
+			'DEFAULT_AVATAR_WIDTH'				=> $config['default_avatar_width'],
+			'DEFAULT_AVATAR_HEIGHT'				=> $config['default_avatar_height'],
+			'DEFAULT_AVATAR_BY_GENDER'			=> $config['default_avatar_by_gender'],
+			'DEFAULT_AVATAR_IMAGE_EXTENSIONS'	=> $config['default_avatar_image_extensions'],
+			'DEFAULT_AVATAR_TYPE_NOTICE'		=> vsprintf('%s<br />%s<br />%s<br />%s<br />', [
 				vsprintf('%s: %s', [
 					$user->lang('ACP_DEFAULT_AVATAR_TYPE_STYLE'),
 					$user->lang('ACP_DEFAULT_AVATAR_TYPE_STYLE_INFO')
@@ -93,25 +112,22 @@ class main_module {
 					$user->lang('ACP_DEFAULT_AVATAR_TYPE_GRAVATAR'),
 					$user->lang('ACP_DEFAULT_AVATAR_TYPE_GRAVATAR_INFO'),
 				])
-		]);
-		
-		/**
-		 * Template variables
-		 */
-		$template->assign_vars([
-			'U_ACTION'							=> $this->u_action,
-			'BOARD_URL'							=> generate_board_url() . '/',
-			'BOARD_STYLE_PATH'					=> $defaultavatar->get_style($user->data['user_style'])['style_path'],
-			'DEFAULT_AVATAR_TYPE'				=> $config['default_avatar_type'],
-			'DEFAULT_AVATAR_IMAGE'				=> $config['default_avatar_image'],
-			'DEFAULT_AVATAR_WIDTH'				=> $config['default_avatar_width'],
-			'DEFAULT_AVATAR_HEIGHT'				=> $config['default_avatar_height'],
-			'DEFAULT_AVATAR_TYPE_NOTICE'		=> $driver_notice,
+			]),
+			'DEFAULT_AVATAR_BY_GENDER_NOTICE'	=> vsprintf($user->lang('ACP_DEFAULT_AVATAR_BY_GENDER_IMAGE_FORMATS_INFO'), [
+				$user->lang('ACP_DEFAULT_AVATAR_TYPE'),
+				$user->lang('ACP_DEFAULT_AVATAR_TYPE_STYLE')
+			]),
+			'DEFAULT_AVATAR_IMAGE_NOTICE'		=> vsprintf($user->lang('ACP_DEFAULT_AVATAR_IMAGE_INFO'), [
+				$user->lang('ACP_DEFAULT_AVATAR_IMAGE'),
+				$user->lang('ACP_DEFAULT_AVATAR_TYPE'),
+				$user->lang('ACP_DEFAULT_AVATAR_TYPE_STYLE')
+			]),
 			'DEFAULT_AVATAR_DIMENSIONS_NOTICE'	=> sprintf($user->lang('ACP_DEFAULT_AVATAR_IMAGE_DIMENSIONS_INFO'), $user->lang('ACP_AVATAR_SETTINGS')),
 			'CONFIG_AVATAR_MIN_WIDTH'			=> $config['avatar_min_width'],
 			'CONFIG_AVATAR_MAX_WIDTH'			=> $config['avatar_max_width'],
 			'CONFIG_AVATAR_MIN_HEIGHT'			=> $config['avatar_min_height'],
-			'CONFIG_AVATAR_MAX_HEIGHT'			=> $config['avatar_max_height']
+			'CONFIG_AVATAR_MAX_HEIGHT'			=> $config['avatar_max_height'],
+			'CAN_ENABLE_AVATAR_BY_GENDER'		=> $defaultavatar->can_enable_gender_avatars()
 		]);
 	}
 }

@@ -34,11 +34,27 @@ class m1_default_avatar_data extends \phpbb\db\migration\migration {
 			],
 			[
 				'config.add',
+				['default_avatar_image_female', '']
+			],
+			[
+				'config.add',
+				['default_avatar_image_male', '']
+			],
+			[
+				'config.add',
 				['default_avatar_width', $this->config['avatar_max_width']]
 			],
 			[
 				'config.add',
 				['default_avatar_height', $this->config['avatar_max_height']]
+			],
+			[
+				'config.add',
+				['default_avatar_by_gender', false]
+			],
+			[
+				'config.add',
+				['default_avatar_image_extensions', 'jpg,png']
 			],
 			[
 				'module.add',
@@ -66,8 +82,12 @@ class m1_default_avatar_data extends \phpbb\db\migration\migration {
 					'default_avatar_type',
 					'default_avatar_driver',
 					'default_avatar_image',
+					'default_avatar_image_female',
+					'default_avatar_image_male',
 					'default_avatar_width',
-					'default_avatar_height'
+					'default_avatar_height',
+					'default_avatar_by_gender',
+					'default_avatar_image_extensions'
 				]
 			]
 		];

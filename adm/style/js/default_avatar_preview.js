@@ -28,40 +28,60 @@ function setup_default_avatar_preview() {
 	 */
 	var $type = $.trim($('[name="default_avatar_type"]:checked').val());
 	var $image = $.trim($('#default_avatar_image').val());
+	var $image_female = $.trim($('#default_avatar_image_female').val());
+	var $image_male = $.trim($('#default_avatar_image_male').val());
 	var $width = parseInt($.trim($('#default_avatar_width').val()));
 	var $height = parseInt($.trim($('#default_avatar_height').val()));
 	
 	/**
 	 * Helpers
 	 */
-	var $img = {src: '', width: $width, height: $height};
+	var $img = {
+		unknown: {src: '', width: $width, height: $height},
+		female: {src: '', width: $width, height: $height},
+		male: {src: '', width: $width, height: $height}
+	};
 	var $html = '';
 	
 	switch ($type) {
 		case 'local':
-			$img.src = $board_url + 'images/avatars/gallery/' + $image;
+			$img.unknown.src = $board_url + 'images/avatars/gallery/' + $image;
+			$img.female.src = $board_url + 'images/avatars/gallery/' + $image_female;
+			$img.male.src = $board_url + 'images/avatars/gallery/' + $image_male;
 			break;
 		case 'style':
-			$img.src = $board_url + 'styles/' + $board_style + '/theme/images/no_avatar.gif';
+			/**
+			 * TODO: Get the image format
+			 */
+			$img.unknown.src = $board_url + 'styles/' + $board_style + '/theme/images/no_avatar.gif';
+			$img.female.src = $board_url + 'styles/' + $board_style + '/theme/images/no_avatar_female.gif';
+			$img.male.src = $board_url + 'styles/' + $board_style + '/theme/images/no_avatar_male.gif';
 			break;
 		case 'remote':
+			var $regexp = /(https?:\/\/(?:www\.)?)|(data:\w+\/\w+;base64)/i;
 			var $matches = [];
-			$img.src = ($matches = $image.match(/(https?:\/\/(?:www\.)?)|(data:\w+\/\w+;base64)/i)) ? $image : $board_url + $image;
+			$img.unknown.src = ($matches = $image.match($regexp)) ? $image : $board_url + $image;
+			$img.female.src = ($matches = $image_female.match($regexp)) ? $image_female : $board_url + $image_female;
+			$img.male.src = ($matches = $image_male.match($regexp)) ? $image_male : $board_url + $image_male;
 			break;
 		case 'gravatar':
-			$img.src = get_gravatar($image, $img.width);
+			$img.unknown.src = get_gravatar($image, $img.unknown.width);
+			$img.female.src = get_gravatar($image_female, $img.female.width);
+			$img.male.src = get_gravatar($image_male, $img.male.width);
 			break;
 	}
 	
 	/**
 	 * HTML image tag
 	 */
-	$html += '<img ';
-	$html += 'src="' + $img.src + '" ';
-	$html += 'width="' + $img.width + '" ';
-	$html += 'height="' + $img.height + '" ';
-	$html += 'style="min-width:' + $min_width + 'px;max-width:' + $max_width + 'px;min-height:' + $min_height + 'px;max-height:' + $max_height + 'px" ';
-	$html += '/>';
+	for (var $gender in $img) {
+		$html += '<img class="avatar-preview" ';
+		$html += 'src="' + $img[$gender].src + '" ';
+		$html += 'width="' + $img[$gender].width + '" ';
+		$html += 'height="' + $img[$gender].height + '" ';
+		$html += 'style="min-width:' + $min_width + 'px;max-width:' + $max_width + 'px;min-height:' + $min_height + 'px;max-height:' + $max_height + 'px" ';
+		$html += '/>';
+	}
 	
 	$previewWrapper.html($html);
 }
