@@ -99,9 +99,9 @@ class defaultavatar {
 	 * Get avatar image from current style
 	 * @return	string
 	 */
-	public function get_current_style_avatar() {
+	public function get_current_style_avatar($user_id = 0) {
 		$style = $this->get_current_style();
-		$gender = $this->get_gender();
+		$gender = $this->get_gender($user_id);
 		$avatar_img = 'no_avatar';
 		$avatar_img_ext = 'gif';
 		$image_extensions = explode(',', trim($this->config['default_avatar_image_extensions']));
@@ -110,7 +110,7 @@ class defaultavatar {
 			
 			$avatar_img = (!empty($gender)) ? sprintf('no_avatar_%s', $gender) : $avatar_img;
 			
-			if (!empty($gender) && $this->config['default_avatar_type'] === 'style') {
+			if (!empty($gender)) {
 				
 				foreach ($image_extensions as $img_ext) {
 					$img_ext = trim($img_ext);
@@ -127,6 +127,83 @@ class defaultavatar {
 		return vsprintf('./styles/%s/theme/images/%s.%s', [$style['style_path'], $avatar_img, $avatar_img_ext]);
 	}
 	
+	public function get_avatar_url($user_id, $options = []) {
+		$defaults = [
+			'html'	=> false,
+			'attrs'	=> []
+		];
+		$options = array_merge($defaults, $options);
+		$gender = $this->get_gender($user_id);
+		$avatar_url = $this->config['default_avatar_image'];
+		
+		switch ($this->config['default_avatar_type']) {
+			case 'style':
+				$avatar_url = $this->get_current_style_avatar($user_id);
+				break;
+			case 'local':
+				$avatar_url = vsprintf('./%s/%s', [$this->config['avatar_gallery_path'], $avatar_url]);
+				
+				if (!empty($gender) && $this->config['default_avatar_by_gender']) {
+					$avatar_url = vsprintf('./%s/%s', [$this->config['avatar_gallery_path'], $this->config[sprintf('default_avatar_image_%s', $gender)]]);
+				}
+				break;
+			case 'gravatar':
+				$avatar_url = $this->get_gravatar([
+					'email'	=> $this->config['default_avatar_image'],
+					'size'	=> $this->config['default_avatar_width']
+				]);
+				
+				if (!empty($gender) && $this->config['default_avatar_by_gender']) {
+					$avatar_url = $this->get_gravatar([
+						'email'	=> $this->config[sprintf('default_avatar_image_%s', $gender)],
+						'size'	=> $this->config['default_avatar_width']
+					]);
+				}
+				break;
+			default:
+				if (!empty($gender) && $this->config['default_avatar_by_gender']) {
+					$avatar_url = $this->config[sprintf('default_avatar_image_%s', $gender)];
+				}
+				break;
+		}
+		
+		if ($options['html']) {
+			$html = '<img src="%s"%s />';
+			$attrs = '';
+			
+			foreach ($options['attrs'] as $key => $value) {
+				$key = trim($key);
+				$value = trim($value);
+				$attrs .= vsprintf(' %s="%s"', [$key, $value]);
+			}
+			
+			$avatar_url = vsprintf($html, [$avatar_url, $attrs]);
+		}
+		
+		return $avatar_url;
+	}
+	
+	/**
+	 * Get gravatar URL/HTML image
+	 * @param	array	$data
+	 * @return	string
+	 */
+	public function get_gravatar($data = []) {
+		// Default values
+		$defaults = [
+			'email'	=> '',
+			'size'	=> $this->config['avatar_max_width']
+		];
+		
+		$data = array_merge($defaults, $data);
+		
+		$url = '//secure.gravatar.com/avatar/%s?s=%d';
+		$hash = md5(strtolower(trim($data['email'])));
+		$gravatar = vsprintf($url, [$hash, $data['size']]);
+		
+		return $gravatar;
+	}
+	
 	/**
 	 * Check if avatars by gender can be enabled
 	 * @return	bool
@@ -139,14 +216,30 @@ class defaultavatar {
 	 * Get user gender if available
 	 * @return	string
 	 */
-	public function get_gender() {
+	public function get_gender($user_id = 0) {
 		$gender = '';
 		
 		if ($this->can_enable_gender_avatars()) {
-			$gender = ($this->user->data['user_gender'] === '1') ? 'male' : $gender;
-			$gender = ($this->user->data['user_gender'] === '2') ? 'female' : $gender;
+			$sql = 'SELECT user_gender
+					FROM ' . USERS_TABLE . '
+					WHERE user_id = "' . $this->db->sql_escape($user_id) . '"';
+			$result = $this->db->sql_query($sql);;
+			$row = $this->db->sql_fetchrow($result);
+			$this->db->sql_freeresult($result);
+			
+			$gender = ($row['user_gender'] === '1') ? 'male' : $gender;
+			$gender = ($row['user_gender'] === '2') ? 'female' : $gender;
 		}
 		
 		return $gender;
+	}
+	
+	public function get_avatar_data($user_id) {
+		return [
+			'user_avatar'			=> $this->get_avatar_url($user_id),
+			'user_avatar_type'		=> $this->config['default_avatar_driver'],
+			'user_avatar_width'		=> $this->config['default_avatar_width'],
+			'user_avatar_height'	=> $this->config['default_avatar_height']
+		];
 	}
 }

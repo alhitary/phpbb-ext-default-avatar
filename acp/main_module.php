@@ -62,6 +62,7 @@ class main_module {
 			 * Avatar by gender
 			 */
 			$avatar_by_gender = $request->variable('default_avatar_by_gender', $config['default_avatar_by_gender']);
+			$avatar_by_gender = $defaultavatar->can_enable_gender_avatars() ? $avatar_by_gender : false;
 			
 			/**
 			 * Avatar image extensions
