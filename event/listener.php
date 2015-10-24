@@ -89,7 +89,7 @@ class listener implements EventSubscriberInterface {
 	
 	public function viewprofile_default_avatar($event) {
 		if (empty($event['member']['user_avatar']) && $this->config['allow_avatar']) {
-			$event['member'] = array_merge($event['member'], $this->avatar_data);
+			$event['member'] = array_merge($event['member'], $this->defaultavatar->get_avatar_data($event['member']['user_id']));
 		}
 	}
 	

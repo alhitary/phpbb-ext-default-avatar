@@ -61,22 +61,38 @@ class defaultavatar {
 		$sql = 'SELECT *
 				FROM ' . STYLES_TABLE . '
 				WHERE style_id = "' . $this->db->sql_escape($id) . '"';
-		$result = $this->db->sql_query($sql);;
+		$result = $this->db->sql_query($sql);
 		$style = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 		
 		return $style;
 	}
 	
+	public function get_user_style($user_id = 0) {
+		$sql = 'SELECT user_style
+				FROM ' . USERS_TABLE . '
+				WHERE user_id = "' . $this->db->sql_escape($user_id) . '"';
+		$result = $this->db->sql_query($sql);
+		$row = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
+		
+		return $this->get_style($row['user_style']);
+	}
+	
 	/**
 	 * Get current style
 	 * @return	array
 	 */
-	public function get_current_style() {
+	public function get_current_style($user_id = 0) {
 		$style = $this->get_style($this->config['default_style']);
 		
 		if ($this->user->data['user_style'] != $this->config['default_style'] && !$this->config['override_user_style']) {
-			$style = $this->get_style($this->user->data['user_style']);
+			
+			$style = $this->get_user_style($user_id);
+			
+			if ($this->user->data['user_id'] == ANONYMOUS) {
+				$style = $this->get_user_style(ANONYMOUS);
+			}
 		}
 		
 		return $style;
@@ -100,7 +116,7 @@ class defaultavatar {
 	 * @return	string
 	 */
 	public function get_current_style_avatar($user_id = 0) {
-		$style = $this->get_current_style();
+		$style = $this->get_current_style($user_id);
 		$gender = $this->get_gender($user_id);
 		$avatar_img = 'no_avatar';
 		$avatar_img_ext = 'gif';
@@ -108,18 +124,19 @@ class defaultavatar {
 		
 		if ($this->can_enable_gender_avatars() && $this->config['default_avatar_by_gender']) {
 			
-			$avatar_img = (!empty($gender)) ? sprintf('no_avatar_%s', $gender) : $avatar_img;
+			//$avatar_img = (!empty($gender)) ? sprintf('no_avatar_%s', $gender) : $avatar_img;
 			
 			if (!empty($gender)) {
 				
 				foreach ($image_extensions as $img_ext) {
 					$img_ext = trim($img_ext);
+					$img_name = sprintf('no_avatar_%s', $gender);
 					
-					if ($this->style_avatar_exists($style['style_path'], $avatar_img, $img_ext)) {
+					if ($this->style_avatar_exists($style['style_path'], $img_name, $img_ext)) {
 						$avatar_img_ext = $img_ext;
+						$avatar_img = $img_name;
 					}
 				}
-				
 			}
 			
 		}
@@ -223,7 +240,7 @@ class defaultavatar {
 			$sql = 'SELECT user_gender
 					FROM ' . USERS_TABLE . '
 					WHERE user_id = "' . $this->db->sql_escape($user_id) . '"';
-			$result = $this->db->sql_query($sql);;
+			$result = $this->db->sql_query($sql);
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 			
