@@ -34,7 +34,7 @@ class defaultavatar {
 	/** @var string */
 	protected $php_ext;
 	
-	/** @var \phpbb\db\tools*/
+	/** @var \phpbb\db\tools */
 	protected $db_tools;
 	
 	protected function init() {

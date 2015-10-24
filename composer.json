@@ -18,6 +18,9 @@
 	"require": {
 		"php": ">=5.4.0"
 	},
+	"suggest": {
+		"rmcgirr83/genders": "To enable avatars by gender feature"
+	},
 	"extra": {
 		"display-name": "Default Avatar Extension",
 		"soft-require": {
