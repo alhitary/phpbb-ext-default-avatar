@@ -54,10 +54,10 @@ class defaultavatar {
 	
 	/**
 	 * Get style from ID
-	 * @param	integer	$id	Style id
+	 * @param	integer	$id	Style ID
 	 * @return	array
 	 */
-	public function get_style($id = 1) {
+	public function get_style($id = 0) {
 		$sql = 'SELECT *
 				FROM ' . STYLES_TABLE . '
 				WHERE style_id = "' . $this->db->sql_escape($id) . '"';
@@ -68,6 +68,11 @@ class defaultavatar {
 		return $style;
 	}
 	
+	/**
+	 * Get user's style
+	 * @param	integer	$user_id	User ID
+	 * @return	array
+	 */
 	public function get_user_style($user_id = 0) {
 		$sql = 'SELECT user_style
 				FROM ' . USERS_TABLE . '
@@ -81,6 +86,7 @@ class defaultavatar {
 	
 	/**
 	 * Get current style
+	 * @param	integer	$user_id	User ID
 	 * @return	array
 	 */
 	public function get_current_style($user_id = 0) {
@@ -100,7 +106,7 @@ class defaultavatar {
 	
 	/**
 	 * Check if avatar image file exists
-	 * @param	array	$style	Style info
+	 * @param	string	$style	Style path
 	 * @param	string	$avatar	Avatar image
 	 * @param	string	$ext	Avatar image format
 	 * @return	bool
@@ -113,6 +119,7 @@ class defaultavatar {
 	
 	/**
 	 * Get avatar image from current style
+	 * @param	integer	$user_id	User ID
 	 * @return	string
 	 */
 	public function get_current_style_avatar($user_id = 0) {
@@ -123,8 +130,6 @@ class defaultavatar {
 		$image_extensions = explode(',', trim($this->config['default_avatar_image_extensions']));
 		
 		if ($this->can_enable_gender_avatars() && $this->config['default_avatar_by_gender']) {
-			
-			//$avatar_img = (!empty($gender)) ? sprintf('no_avatar_%s', $gender) : $avatar_img;
 			
 			if (!empty($gender)) {
 				
@@ -144,10 +149,17 @@ class defaultavatar {
 		return vsprintf('./styles/%s/theme/images/%s.%s', [$style['style_path'], $avatar_img, $avatar_img_ext]);
 	}
 	
-	public function get_avatar_url($user_id, $options = []) {
+	/**
+	 * Get avatar URL
+	 * @param	integer	$user_id	User ID
+	 * @param	array	$options
+	 * @return	string
+	 */
+	public function get_avatar_url($user_id = 0, $options = []) {
 		$defaults = [
-			'html'	=> false,
-			'attrs'	=> []
+			'full_path'	=> false,
+			'html'		=> false,
+			'attrs'		=> []
 		];
 		$options = array_merge($defaults, $options);
 		$gender = $this->get_gender($user_id);
@@ -158,10 +170,18 @@ class defaultavatar {
 				$avatar_url = $this->get_current_style_avatar($user_id);
 				break;
 			case 'local':
-				$avatar_url = vsprintf('./%s/%s', [$this->config['avatar_gallery_path'], $avatar_url]);
+				$avatar_url = sprintf('%s', $avatar_url);
+				
+				if ($options['full_path']) {
+					$avatar_url = vsprintf('./%s/%s', [$this->config['avatar_gallery_path'], $avatar_url]);
+				}
 				
 				if (!empty($gender) && $this->config['default_avatar_by_gender']) {
-					$avatar_url = vsprintf('./%s/%s', [$this->config['avatar_gallery_path'], $this->config[sprintf('default_avatar_image_%s', $gender)]]);
+					$avatar_url = sprintf('%s', $this->config[sprintf('default_avatar_image_%s', $gender)]);
+					
+					if ($options['full_path']) {
+						$avatar_url = vsprintf('./%s/%s', [$this->config['avatar_gallery_path'], $this->config[sprintf('default_avatar_image_%s', $gender)]]);
+					}
 				}
 				break;
 			case 'gravatar':
@@ -202,7 +222,7 @@ class defaultavatar {
 	
 	/**
 	 * Get gravatar URL/HTML image
-	 * @param	array	$data
+	 * @param	array	$data	Gravatar options
 	 * @return	string
 	 */
 	public function get_gravatar($data = []) {
@@ -230,7 +250,8 @@ class defaultavatar {
 	}
 	
 	/**
-	 * Get user gender if available
+	 * Get user gender
+	 * @param	integer	$user_id	User ID
 	 * @return	string
 	 */
 	public function get_gender($user_id = 0) {
@@ -251,7 +272,12 @@ class defaultavatar {
 		return $gender;
 	}
 	
-	public function get_avatar_data($user_id) {
+	/**
+	 * Get avatar data
+	 * @param	integer	$user_id	User ID
+	 * @return	array
+	 */
+	public function get_avatar_data($user_id = 0) {
 		return [
 			'user_avatar'			=> $this->get_avatar_url($user_id),
 			'user_avatar_type'		=> $this->config['default_avatar_driver'],

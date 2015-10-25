@@ -81,7 +81,7 @@ class listener implements EventSubscriberInterface {
 	public function ucp_pm_default_avatar($event) {
 		if (empty($event['msg_data']['AUTHOR_AVATAR']) && $this->config['allow_avatar']) {
 			$default_avatar_set_ext = array_merge($event['msg_data'], [
-				'AUTHOR_AVATAR'	=> $this->defaultavatar->get_avatar_url($event['user_info']['user_id'], ['html' => true])
+				'AUTHOR_AVATAR'	=> $this->defaultavatar->get_avatar_url($event['user_info']['user_id'], ['html' => true, 'full_path' => true])
 			]);
 			$event['msg_data'] = $default_avatar_set_ext;
 		}

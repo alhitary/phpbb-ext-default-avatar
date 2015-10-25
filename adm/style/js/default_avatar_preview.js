@@ -56,6 +56,25 @@ function setup_default_avatar_preview() {
 			$img.unknown.src = $board_url + 'styles/' + $board_style + '/theme/images/no_avatar.gif';
 			$img.female.src = $board_url + 'styles/' + $board_style + '/theme/images/no_avatar_female.gif';
 			$img.male.src = $board_url + 'styles/' + $board_style + '/theme/images/no_avatar_male.gif';
+			
+			// Check if image exists
+			$.ajax({
+				url: $img.female.src,
+				async: false,
+				type: 'HEAD',
+				error: function() {
+					$img.female.src = $img.unknown.src;
+				}
+			});
+			$.ajax({
+				url: $img.male.src,
+				async: false,
+				type: 'HEAD',
+				error: function() {
+					$img.male.src = $img.unknown.src;
+				}
+			});
+			
 			break;
 		case 'remote':
 			var $regexp = /(https?:\/\/(?:www\.)?)|(data:\w+\/\w+;base64)/i;
