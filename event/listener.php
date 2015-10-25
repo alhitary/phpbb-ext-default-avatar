@@ -42,8 +42,6 @@ class listener implements EventSubscriberInterface {
 		$this->template = $template;
 		$this->config = $config;
 		$this->user = $user;
-		
-		/* Default avatar data */
 		$this->defaultavatar = \alfredoramos\defaultavatar\includes\defaultavatar::instance();
 	}
 	

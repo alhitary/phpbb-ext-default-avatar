@@ -89,16 +89,12 @@ class defaultavatar {
 	 * @param	integer	$user_id	User ID
 	 * @return	array
 	 */
-	public function get_current_style($user_id = 0) {
+	public function get_current_style() {
 		$style = $this->get_style($this->config['default_style']);
 		
 		if ($this->user->data['user_style'] != $this->config['default_style'] && !$this->config['override_user_style']) {
 			
-			$style = $this->get_user_style($user_id);
-			
-			if ($this->user->data['user_id'] == ANONYMOUS) {
-				$style = $this->get_user_style(ANONYMOUS);
-			}
+			$style = $this->get_user_style($this->user->data['user_id']);
 		}
 		
 		return $style;
@@ -123,7 +119,7 @@ class defaultavatar {
 	 * @return	string
 	 */
 	public function get_current_style_avatar($user_id = 0) {
-		$style = $this->get_current_style($user_id);
+		$style = $this->get_current_style();
 		$gender = $this->get_gender($user_id);
 		$avatar_img = 'no_avatar';
 		$avatar_img_ext = 'gif';
