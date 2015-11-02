@@ -32,10 +32,10 @@ $lang = array_merge($lang, [
 	'ACP_AVATAR_FROM_STYLE'			=> 'من الإستايل',
 	'ACP_AVATAR_FROM_STYLE_EXPLAIN'	=> 'يجب أن تكون الصورة موجودة في أستايل العضو',
 	
-	'ACP_LOCAL_AVATAR'			=> 'محلي',
+	'ACP_LOCAL_AVATAR'			=> 'رابط محلي',
 	'ACP_LOCAL_AVATAR_EXPLAIN'	=> 'يجب أن تكون الصورة موجودة في المسار <code>%s</code>.',
 	
-	'ACP_REMOTE_AVATAR'			=> 'خارجي',
+	'ACP_REMOTE_AVATAR'			=> 'رابط خارجي',
 	'ACP_REMOTE_AVATAR_EXPLAIN'	=> 'يجب أن يكون رابط مباشر للصورة من موقع خارجي أو موقعك.',
 	
 	'ACP_GRAVATAR_AVATAR'			=> 'جرافتار',
@@ -50,13 +50,13 @@ $lang = array_merge($lang, [
 	'ACP_AVATAR_DIMENSIONS_EXPLAIN'	=> 'الحد الأعلى والأدنى لأبعاد الصورة تعتمد على <strong>%s</strong>.',
 	
 	'ACP_FORCE_AVATAR'			=> 'فرض الصورة الشخصية ',
-	'ACP_FORCE_AVATAR_EXPLAIN'	=> 'يعني استخدام الصورة الشخصية بصورة إجبارية حتى لو تم تعطيلها بواسطة العضو من لوحة التحكم الخاصة به.',
+	'ACP_FORCE_AVATAR_EXPLAIN'	=> 'استخدام الصورة الشخصية بصورة إجبارية حتى لو تم تعطيلها بواسطة العضو من لوحة التحكم الخاصة به.',
 	
 	'ACP_AVATAR_BY_GENDER'			=> 'الصورة الشخصية بحسب نوع الجنس ',
 	'ACP_AVATAR_BY_GENDER_EXPLAIN'	=> 'أنت بحاجة إلى تثبيت وتفعيل الإضافة <a href="https://www.phpbb.com/customise/db/extension/phpbb_3.1_genders">الجنس</a> لكي تستطيع استخدام الصورة الشخصية بحسب نوع الجنس.',
 	
 	'ACP_IMAGE_EXTENSIONS'			=> 'أنواع امتداد الصور ',
-	'ACP_IMAGE_EXTENSIONS_EXPLAIN'	=> 'قائمة أنواع امتداد الصور للبحث عنها في مسار الإستايل. أفصل بينهم بعلامة الفاصلة. هذا الخيار لن يكون له أي تأثير إذا تم تحديد "%s" في الخيار : "%s".',
+	'ACP_IMAGE_EXTENSIONS_EXPLAIN'	=> 'قائمة أنواع امتداد الصور للبحث عنها في مسار الإستايل. أفصل بينهم بعلامة الفاصلة. هذا الخيار لن يكون له أي تأثير إذا لم يتم تحديد "%2$s" في الخيار : "%1$s".',
 	
 	'ACP_PREVIEW_EXPLAIN'	=> 'هنا سيتم عرض الصورة التي أضفتها.'
 ]);
